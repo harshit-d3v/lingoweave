@@ -8,6 +8,7 @@ export default defineConfig([
     entry: {
       index: 'src/index.ts',
       providers: 'src/providers.ts',
+      switcher: 'src/switcher.ts',
     },
     format: ['esm', 'cjs'],
     // Declarations come from `tsc -p tsconfig.build.json` instead. tsup's

@@ -53,6 +53,11 @@
       "import": "./dist/providers.js",
       "require": "./dist/providers.cjs"
     },
+    "./switcher": {
+      "types": "./dist/switcher.d.ts",
+      "import": "./dist/switcher.js",
+      "require": "./dist/switcher.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -67,9 +72,13 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "size": "size-limit",
-    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build",
+    "build:demo": "npm run build && node -e \"require('fs').copyFileSync('dist/lingoweave.global.js','demo/lingoweave.global.js')\"",
+    "pretest:browser": "npm run build:demo",
+    "test:browser": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@size-limit/preset-small-lib": "^14.0.0",
     "@types/node": "^22.10.2",
     "happy-dom": "^20.14.5",

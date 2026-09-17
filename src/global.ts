@@ -9,7 +9,10 @@
 import { createWeaver, LingoWeave, weave } from './index.js'
 import { directionFor, isRtl } from './core/rtl.js'
 import * as providers from './providers.js'
+import { defineSwitcher, LingoSwitcher } from './switcher.js'
 
-export { createWeaver, directionFor, isRtl, LingoWeave, providers, weave }
+defineSwitcher()
 
-export default { createWeaver, directionFor, isRtl, LingoWeave, providers, weave }
+export { createWeaver, defineSwitcher, directionFor, isRtl, LingoSwitcher, LingoWeave, providers, weave }
+
+export default { createWeaver, defineSwitcher, directionFor, isRtl, LingoSwitcher, LingoWeave, providers, weave }
