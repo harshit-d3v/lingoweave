@@ -183,6 +183,35 @@ switcher.weaver = await weave({ to: 'auto' })
 
 Picking a language fires a cancelable `lingo-change` event with `detail.language`, then calls `weaver.setLanguage()`. Picking the source language puts the original text back. Call `preventDefault()` on the event to handle the switch yourself.
 
+## React
+
+`lingoweave/react` owns the weaver's lifecycle for you: it starts on mount, follows the `to` prop, and destroys on unmount. Because lingoweave assigns to `nodeValue` and never replaces a node, it does not trip React's `removeChild` error the way `<font>`-based translators do.
+
+```tsx
+import { LingoweaveProvider, useLingoweave } from 'lingoweave/react'
+
+function App() {
+  return (
+    <LingoweaveProvider to="es">
+      <Page />
+      <LanguagePicker />
+    </LingoweaveProvider>
+  )
+}
+
+function LanguagePicker() {
+  const { language, setLanguage } = useLingoweave()
+  return (
+    <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+    </select>
+  )
+}
+```
+
+`useLingoweave()` returns `{ language, setLanguage, sourceLanguage, stats, ready, weaver }`, and throws if used outside the provider. `useWeaver()` gives you the raw instance for advanced use, or `null` before it starts. There is a ready-made `<LanguageSwitcher languages={['en', 'es']} />` too. The provider takes every `weave()` option as a prop, or pass `weaver={...}` to hand it an instance you started yourself (it will not destroy that one). It is SSR-safe: translation runs in an effect, never during render. `react` is an optional peer dependency.
+
 ## How it compares
 
 | | Open source | Keeps node identity (React safe) | Shadow DOM | Free provider |
@@ -239,7 +268,7 @@ await weaver.destroy()           // puts every original string back
 Works on any site, including the ones the discontinued Google widget left with nothing.
 
 ```html
-<script src="https://unpkg.com/lingoweave@0.2.0/dist/lingoweave.global.js"
+<script src="https://unpkg.com/lingoweave@0.3.0/dist/lingoweave.global.js"
         integrity="sha384-huw65kP6knFeZdAqWtW4ASI07EiA7q0F7DhqxyWG9N967QqjRPSXabQlKduWyFW6"
         crossorigin="anonymous"></script>
 <script>lingoweave.weave({ to: 'es' })</script>
@@ -252,7 +281,7 @@ The `integrity` attribute is what makes this safe to paste into a production pag
 To verify it yourself, or after any version bump:
 
 ```bash
-curl -s https://unpkg.com/lingoweave@0.2.0/dist/lingoweave.global.js \
+curl -s https://unpkg.com/lingoweave@0.3.0/dist/lingoweave.global.js \
   | openssl dgst -sha384 -binary | openssl base64 -A
 ```
 

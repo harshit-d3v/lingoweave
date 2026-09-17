@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- React adapter at `lingoweave/react`: `<LingoweaveProvider>`, `useLingoweave()`, `useWeaver()`, and a `<LanguageSwitcher>`. Owns the weaver lifecycle, follows the `to` prop, SSR-safe. `react` is an optional peer dependency.
+
 ## 0.2.0
 
 - `<lingo-switcher>` custom element, also exported as `lingoweave/switcher`. Picks a language, fires `lingo-change`, calls `setLanguage()`.

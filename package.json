@@ -1,6 +1,6 @@
 {
   "name": "lingoweave",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Drop-in automatic translation for your whole website. Translates every element (dropdowns, submenus, modals, tooltips and anything injected later), pierces Shadow DOM, and never breaks React.",
   "keywords": [
     "translate",
@@ -58,6 +58,11 @@
       "import": "./dist/switcher.js",
       "require": "./dist/switcher.cjs"
     },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -80,8 +85,14 @@
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@size-limit/preset-small-lib": "^14.0.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^22.10.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "happy-dom": "^20.14.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "size-limit": "^14.0.0",
     "tsup": "^8.3.5",
     "typescript": "^7.0.2",
@@ -93,5 +104,13 @@
       "path": "dist/index.js",
       "limit": "12 kB"
     }
-  ]
+  ],
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  }
 }
