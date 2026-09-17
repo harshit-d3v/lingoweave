@@ -70,10 +70,10 @@
     "prepublishOnly": "npm run typecheck && npm run test && npm run build"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^11.1.6",
+    "@size-limit/preset-small-lib": "^14.0.0",
     "@types/node": "^22.10.2",
-    "happy-dom": "^15.11.7",
-    "size-limit": "^11.1.6",
+    "happy-dom": "^20.14.5",
+    "size-limit": "^14.0.0",
     "tsup": "^8.3.5",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11"
