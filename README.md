@@ -20,6 +20,8 @@ await weave({ to: 'es' })
 
 That's it. No account, no API key to get started, no JSON dictionaries to maintain, no wrapping your text in `<T>` components. Zero dependencies, 8.2 kB.
 
+**Live demo:** [harshit-d3v.github.io/lingoweave](https://harshit-d3v.github.io/lingoweave/), every hard case on one page with a language switcher.
+
 ---
 
 ## What it actually translates
@@ -89,6 +91,8 @@ Note the bold moved to the front, Japanese word order differs, and it still read
 Zero config uses **Chrome's built-in on-device translator** (Chrome 138+): free, private, works offline, costs nothing at any volume. On other browsers a keyless endpoint covers **localhost only**, so your first run works immediately.
 
 In production with no provider configured it warns once and leaves the page in its source language, rather than quietly depending on an endpoint that will rate-limit you in front of real users.
+
+To be clear about that keyless endpoint: it is Google's undocumented web translation endpoint, it only runs on localhost, and it can stop working any day. It exists so the first `weave()` shows something. Do not build on it.
 
 ```js
 import { weave } from 'lingoweave'
@@ -161,6 +165,33 @@ Switching to Arabic, Hebrew, Persian or Urdu sets `dir="rtl"` and `<html lang>` 
 
 CJK is a first-class case, not an afterthought. Japanese and Chinese have no spaces between words, so a sentence rebuilt from fragments must not invent any. Sentences end in `。`, which a regex looking for `.` never finds, `Intl.Segmenter` does. Full-width digits and CJK punctuation (`。` `、` `・` `￥1,200`) are skipped as non-prose, while a lone kanji like `円` is not.
 
+## Language switcher
+
+A dropdown that drives the weaver, shipped as a custom element. It is in the `<script>` build already; npm users import it once.
+
+```html
+<lingo-switcher languages="en,es,ja"></lingo-switcher>
+```
+
+```js
+import { weave } from 'lingoweave'
+import 'lingoweave/switcher'
+
+const switcher = document.querySelector('lingo-switcher')
+switcher.weaver = await weave({ to: 'auto' })
+```
+
+Picking a language fires a cancelable `lingo-change` event with `detail.language`, then calls `weaver.setLanguage()`. Picking the source language puts the original text back. Call `preventDefault()` on the event to handle the switch yourself.
+
+## How it compares
+
+| | Open source | Keeps node identity (React safe) | Shadow DOM | Free provider |
+|---|---|---|---|---|
+| Google Website Translator | no, discontinued 2019 | no | no | was |
+| Weglot, Localize | no, paid SaaS | no | partial | no |
+| translate.js | yes | no, replaces nodes | no | author-hosted |
+| lingoweave | yes | yes | yes | Chrome on-device |
+
 ## API
 
 ```js
@@ -208,8 +239,8 @@ await weaver.destroy()           // puts every original string back
 Works on any site, including the ones the discontinued Google widget left with nothing.
 
 ```html
-<script src="https://unpkg.com/lingoweave@0.1.2/dist/lingoweave.global.js"
-        integrity="sha384-amw5bDC6TlMKpNCy+VpdT+YLVoE+rPLFWgpzBXWaE9gRbUl+ayjLGUxC2GAhNSN0"
+<script src="https://unpkg.com/lingoweave@0.2.0/dist/lingoweave.global.js"
+        integrity="sha384-huw65kP6knFeZdAqWtW4ASI07EiA7q0F7DhqxyWG9N967QqjRPSXabQlKduWyFW6"
         crossorigin="anonymous"></script>
 <script>lingoweave.weave({ to: 'es' })</script>
 ```
@@ -221,13 +252,13 @@ The `integrity` attribute is what makes this safe to paste into a production pag
 To verify it yourself, or after any version bump:
 
 ```bash
-curl -s https://unpkg.com/lingoweave@0.1.2/dist/lingoweave.global.js \
+curl -s https://unpkg.com/lingoweave@0.2.0/dist/lingoweave.global.js \
   | openssl dgst -sha384 -binary | openssl base64 -A
 ```
 
 `npm install` users need none of this, npm already verifies the tarball hash from your lockfile.
 
-Everything is exposed on `window.lingoweave`: `weave`, `createWeaver`, `providers`, `isRtl`.
+Everything is exposed on `window.lingoweave`: `weave`, `createWeaver`, `providers`, `isRtl`, `LingoSwitcher`, and `<lingo-switcher>` is registered for you.
 
 ## Honest limitations
 
@@ -238,11 +269,9 @@ Everything is exposed on `window.lingoweave`: `weave`, `createWeaver`, `provider
 
 ## Status
 
-v0.1.0: the core is complete and tested: **194 tests**, zero dependencies, 8.2 kB brotlied, typechecked with TypeScript 7.
+v0.2.0: core plus `<lingo-switcher>`. **197 unit tests** in happy-dom and a Playwright run in real Chromium against the [demo page](https://harshit-d3v.github.io/lingoweave/) on every push: closed dropdown, nested submenu, unopened modal, shadow root, attributes, injected content, `ar` flipping to RTL, and `en` restoring the original text. Zero dependencies, 8.2 kB brotlied, typechecked with TypeScript 7.
 
-Verified in a real browser against a page that puts every hard case together, closed dropdown, nested submenu, unopened modal, shadow root, SVG labels, meta tags, exclusions, cycling `ja → ko → ja → ar → es → en` and confirming the DOM returns byte-for-byte to its original.
-
-Planned for 0.2: a React adapter, a `<lingo-switcher>` element, closed-shadow-root support via a preload script, same-origin iframes, viewport-priority lazy mode, and a CLI that extracts dictionaries from a running site.
+Next: a React adapter, closed-shadow-root support via a preload script, same-origin iframes, viewport-priority lazy mode, and a CLI that extracts dictionaries from a running site.
 
 ## License
 

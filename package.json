@@ -1,6 +1,6 @@
 {
   "name": "lingoweave",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Drop-in automatic translation for your whole website. Translates every element (dropdowns, submenus, modals, tooltips and anything injected later), pierces Shadow DOM, and never breaks React.",
   "keywords": [
     "translate",
