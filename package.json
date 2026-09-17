@@ -1,0 +1,88 @@
+{
+  "name": "lingoweave",
+  "version": "0.1.2",
+  "description": "Drop-in automatic translation for your whole website. Translates every element (dropdowns, submenus, modals, tooltips and anything injected later), pierces Shadow DOM, and never breaks React.",
+  "keywords": [
+    "translate",
+    "translation",
+    "auto-translate",
+    "automatic-translation",
+    "website-translation",
+    "dom-translation",
+    "i18n",
+    "internationalization",
+    "localization",
+    "l10n",
+    "multilingual",
+    "mutationobserver",
+    "shadow-dom",
+    "google-translate-alternative",
+    "translator",
+    "rtl"
+  ],
+  "author": "harshit-d3v",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshit-d3v/lingoweave.git"
+  },
+  "homepage": "https://github.com/harshit-d3v/lingoweave#readme",
+  "bugs": {
+    "url": "https://github.com/harshit-d3v/lingoweave/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": [
+    "./dist/lingoweave.global.js"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/lingoweave.global.js",
+  "jsdelivr": "./dist/lingoweave.global.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./providers": {
+      "types": "./dist/providers.d.ts",
+      "import": "./dist/providers.js",
+      "require": "./dist/providers.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "size": "size-limit",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.1.6",
+    "@types/node": "^22.10.2",
+    "happy-dom": "^15.11.7",
+    "size-limit": "^11.1.6",
+    "tsup": "^8.3.5",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "size-limit": [
+    {
+      "name": "core",
+      "path": "dist/index.js",
+      "limit": "12 kB"
+    }
+  ]
+}

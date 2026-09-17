@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    // ES2021.WeakRef only, not full ES2021: WeakRef/FinalizationRegistry let the
+    // applier undo its work without pinning discarded nodes in memory, and are
+    // available everywhere the rest of the target is (Chrome 84+, Safari 14.1+).
+    // Narrow additions on top of ES2020 rather than raising the whole target:
+    // ES2021.WeakRef lets the applier undo its work without pinning discarded
+    // nodes in memory; ES2022.Intl is Intl.Segmenter, which finds sentence
+    // boundaries in scripts that use neither spaces nor full stops.
+    "lib": ["ES2020", "ES2021.WeakRef", "ES2022.Intl", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": false,
+
+    // Emit is configured in tsconfig.build.json; this config only typechecks.
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src", "test"]
+}

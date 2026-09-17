@@ -1,0 +1,20 @@
+// Declaration emit only. TypeScript 7's native compiler produces the .d.ts
+// files; tsup's bundled rollup-plugin-dts cannot, because it reaches into the
+// old JS compiler API that the native build no longer exposes.
+//
+// Entry modules are flat files directly under src/ so that `rootDir: src` maps
+// them onto the paths the package.json "exports" map promises:
+//   src/index.ts   -> dist/index.d.ts
+//   src/react.tsx  -> dist/react.d.ts
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "src",
+    "declarationDir": "dist",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}
